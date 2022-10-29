@@ -1,0 +1,43 @@
+- name: zip
+  type: table
+  desc: Zip Extension
+  members:
+  - name: open
+    type: function
+    desc: Open an archive
+    parameters:
+    - name: buffer
+      type: string
+      desc: String buffer of the archive
+    returns:
+      - name: archive
+        type: userdata
+
+  - name: get_number_of_entries
+    type: function
+    desc: Get the number of entries in the archive
+    parameters:
+      - name: archive
+        type: userdata
+    returns:
+      - name: count
+        type: number
+
+  - name: extract_by_index
+    type: function
+    desc: Extract an entry
+    parameters:
+      - name: archive
+        type: userdata
+      - name: index
+        type: number
+    returns:
+      - name: file
+        type: table
+
+  - name: close
+    type: function
+    desc: Close the archive
+    parameters:
+      - name: archive
+        type: userdata

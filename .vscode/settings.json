@@ -1,0 +1,18 @@
+{
+	"files.associations": {
+		"*.script": "lua",
+		"__cxx_version": "cpp",
+		"typeinfo": "cpp",
+		"array": "cpp",
+		"iterator": "cpp",
+		"string": "cpp",
+		"string_view": "cpp",
+		"vector": "cpp",
+		"__hash_table": "cpp",
+		"__split_buffer": "cpp",
+		"bitset": "cpp",
+		"initializer_list": "cpp",
+		"unordered_map": "cpp",
+		"utility": "cpp"
+	}
+}

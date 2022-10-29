@@ -1,0 +1,66 @@
+function init(self)
+	msg.post('.', 'acquire_input_focus')
+	self.filename_label = msg.url('#filename_label')
+	self.progress_label = msg.url('#progress_label')
+end
+
+function update(self, dt)
+	if self.zip_archive and not self.is_unpacking then
+		self.entry_index = self.entry_index + 1
+		if (self.entry_index + 1) > self.number_of_entries then
+			zip.close(self.zip_archive)
+			self.zip_archive = nil
+			print('DONE')
+		else
+			self.is_unpacking = true
+			local file = zip.extract_by_index(self.zip_archive, self.entry_index)
+			print('')
+			print('index:', self.entry_index)
+			print('filename:', file.name)
+			print('filesize:', file.size)
+			print('checksum:', file.checksum)
+			print('is_dir:', file.is_dir)
+			local is_good = false
+			if file.content and file.content:len() == file.size then
+				is_good = true
+			end
+			print('unpacking check:', is_good)
+			self.is_unpacking = false
+			label.set_text(self.filename_label, file.name)
+			label.set_text(self.progress_label, (self.entry_index + 1) .. ' / ' .. self.number_of_entries)
+		end
+	end
+end
+
+local function on_extract_all_button(self)
+	local zip_content = sys.load_resource('/res/assets-defold-master.zip')
+	if zip_content then
+		self.zip_archive = zip.open(zip_content)
+		self.number_of_entries = zip.get_number_of_entries(self.zip_archive)
+		self.entry_index = -1
+	else
+		print('ZIP file not found.')
+	end
+end
+
+local buttons = {
+	extract_all_button = on_extract_all_button
+}
+
+-- Check if buttons are pressed.
+function on_input(self, action_id, action)
+	if action_id == hash('mouse_left') and action.pressed then
+		local mouse_position = vmath.vector3(action.x, action.y, 0)
+		for button, callback in pairs(buttons) do
+			local position = go.get_world_position(button)
+			local diff = position - mouse_position
+			if math.abs(diff.x) < 105 and math.abs(diff.y) < 40 then
+				callback(self)
+				go.set(button .. '#sprite', 'tint', vmath.vector4(0.5, 0.5, 0.5, 1))
+				timer.delay(0.1, false, function()
+					go.set(button .. '#sprite', 'tint', vmath.vector4(1, 1, 1, 1))
+				end)
+			end
+		end
+	end
+end

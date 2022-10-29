@@ -1,0 +1,24 @@
+[project]
+title = Zip Extension
+version = 0.1
+custom_resources = /res
+
+[bootstrap]
+main_collection = /main/main.collectionc
+
+[input]
+game_binding = /input/game.input_bindingc
+
+[display]
+width = 1280
+height = 720
+
+[script]
+shared_state = 1
+
+[html5]
+htmlfile = /builtins/manifests/web/engine_template.html
+
+[library]
+include_dirs = zip
+
